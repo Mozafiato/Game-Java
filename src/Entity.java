@@ -1,4 +1,4 @@
-import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImage; //kotnol
 
 public class Entity {
     
