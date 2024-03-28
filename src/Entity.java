@@ -1,4 +1,4 @@
-import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImage; //bodp
 
 public class Entity {
     
