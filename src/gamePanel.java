@@ -19,13 +19,14 @@ public class gamePanel extends JPanel implements Runnable {
         TileManager tileM = new TileManager(this);
         KeyHandler keyH = new KeyHandler();
         Thread gameThread; //konsep waktu buat game nya, jadi bukan kek ppt, jadi kalo dah dipanggil dia bakal call method run otomatis
+        CollisionChecker Checker = new CollisionChecker(this);
         Player player = new Player(this,keyH);
 
         int playerX = 100;
         int playerY = 100;
         int playerSpeed = 4;
 
-
+        
         public gamePanel (){
             this.setPreferredSize(new Dimension(screenWidth, screenHeight));
             this.setBackground(Color.black);
