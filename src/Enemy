@@ -1,0 +1,63 @@
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+
+public class Enemy extends Character {
+    private BufferedImage enemyImage;
+    private gamePanel gp;
+    private int x;
+    private int y;
+
+    public Enemy(String name, int health, int defense, int attack, gamePanel gp) {
+        super(name, health, defense); // Call the superclass constructor with name, health, and defense
+        this.setAttackValue(attack); // Set the attack value for the enemy
+        this.gp = gp;
+        loadEnemyImage();
+        setStartPosition();
+    }
+
+    public void setAttackValue(int attack) {
+        this.attack = attack;
+    }
+
+    private void loadEnemyImage() {
+        try {
+            enemyImage = ImageIO.read(getClass().getResourceAsStream("/Enemy/enemy.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setStartPosition() {
+        // Set the enemy's initial position (stationary)
+        x = 100; // Adjust as needed
+        y = 100; // Adjust as needed
+    }
+
+    @Override
+    public void attack(Character opponent) {
+        if (opponent instanceof Player) { 
+            int damage = this.getAttack();
+            opponent.takeDamage(damage);
+        }
+    }
+
+    @Override
+    public Rectangle getBounds() {
+        return new Rectangle(x, y, enemyImage.getWidth(), enemyImage.getHeight());
+    }
+
+    public void draw(Graphics2D g2) {
+        g2.drawImage(enemyImage, x, y, null);
+    }
+
+    // Method to check if the player is close enough to initiate battle
+    public boolean isPlayerNear(Player player) {
+        int playerX = player.getX();
+        int playerY = player.getY();
+        int distance = (int) Math.sqrt(Math.pow(playerX - x, 2) + Math.pow(playerY - y, 2));
+        return distance < 50; // Adjust the proximity threshold as needed
+    }
+}
