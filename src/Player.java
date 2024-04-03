@@ -56,49 +56,46 @@ public class Player extends Entity {
         }
     }
 
-    // Implement the attack method to handle player's attack
+
     public void attack(Character opponent) {
         int damage = Math.max(0, this.attack - opponent.defense);
-        opponent.takeDamage(damage); // Assuming the opponent has a method to take damage
+        opponent.takeDamage(damage); 
         System.out.println(this.name + " attacks " + opponent.getName() + " for " + damage + " damage.");
     }
 
     public void takeDamage(int damage) {
         health -= damage;
         if (!isAlive()) {
-            System.out.println("Player is defeated!"); // Or any other appropriate action
+            System.out.println("Player is defeated!"); 
         }
     }
 
 
-    // Getters and setters for health and name
+  
     public int getHealth() {
         return health;
     }
 
     public void attack(Enemy enemy) {
-        int damage = this.attack; // Adjust this based on your damage calculation logic
+        int damage = this.attack; 
         enemy.takeDamage(damage);
     }
 
     public void defend() {
-        // Increase defense temporarily when defending
-        // For example, increase defense by 50% for 3 turns
-        int defenseIncrease = (int) (this.defense * 0.5); // Increase defense by 50%
-        int duration = 3; // Number of turns the defense increase lasts
+        int defenseIncrease = (int) (this.defense * 0.5); 
+        int duration = 3; 
 
-        // Apply defense increase
+   
         this.defense += defenseIncrease;
 
-        // Schedule to revert the defense increase after a certain duration
+       
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                // Revert the defense increase after the duration
                 Player.this.defense -= defenseIncrease;
             }
-        }, duration * 1000); // Convert duration to milliseconds (assuming each turn takes 1 second)
+        }, duration * 1000); 
     }
 
     public int getX() {
@@ -113,7 +110,7 @@ public class Player extends Entity {
         int spriteWidth = enemyImage.getWidth();
         int spriteHeight = enemyImage.getHeight();
 
-        return new Rectangle(x, y, spriteWidth, spriteHeight); // Assuming x, y, playerWidth, and playerHeight are your player's coordinates and dimensions
+        return new Rectangle(x, y, spriteWidth, spriteHeight); 
     }
 
     public String getName() {
@@ -124,7 +121,7 @@ public class Player extends Entity {
         return health > 0;
     }
 
-    // Update player's position and animation
+
     public void update() {
         if (keyH.upPress || keyH.downPress || keyH.leftPress || keyH.rightPress) {
             if (keyH.upPress) {
@@ -137,10 +134,10 @@ public class Player extends Entity {
                 direction = "right";
             }
 
-            // Check tile collision
+  
             collisionOn = false;
             gp.Checker.checkTile(this);
-            // If collision is false, player can move
+        
             if (!collisionOn) {
                 switch (direction) {
                     case "up":
@@ -159,7 +156,7 @@ public class Player extends Entity {
             }
 
             spriteCounter++;
-            if (spriteCounter > 12) { // untuk gerakan nya berganti ganti
+            if (spriteCounter > 12) { 
                 if (spriteNum == 1) {
                     spriteNum = 2;
                 } else if (spriteNum == 2) {
@@ -170,7 +167,7 @@ public class Player extends Entity {
         }
     }
 
-    // Draw the player on the screen
+  
     public void draw(Graphics2D g2) {
         BufferedImage image = null;
         switch (direction) {
