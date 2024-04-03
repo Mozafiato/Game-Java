@@ -11,8 +11,8 @@ public class Enemy extends Character {
     private int y;
 
     public Enemy(String name, int health, int defense, int attack, gamePanel gp) {
-        super(name, health, defense); // Call the superclass constructor with name, health, and defense
-        this.setAttackValue(attack); // Set the attack value for the enemy
+        super(name, health, defense); 
+        this.setAttackValue(attack); 
         this.gp = gp;
         loadEnemyImage();
         setStartPosition();
@@ -32,8 +32,8 @@ public class Enemy extends Character {
 
     private void setStartPosition() {
         // Set the enemy's initial position (stationary)
-        x = 100; // Adjust as needed
-        y = 100; // Adjust as needed
+        x = 100; 
+        y = 100; 
     }
 
     @Override
