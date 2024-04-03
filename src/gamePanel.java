@@ -26,8 +26,8 @@ public class gamePanel extends JPanel implements Runnable {
         this.setFocusable(true);
         this.addKeyListener(keyH);
         this.setFocusable(true);
-        this.player = new Player(100, "Player", this, keyH); // Adjust health as needed
-        this.enemy = new Enemy("Enemy", 100); // Adjust health as needed
+        this.player = new Player(100, "Player", this, keyH); 
+        this.enemy = new Enemy("Enemy", 100); 
          this.tileM = new TileManager(this);
         this.keyH = new KeyHandler();
     }
@@ -56,11 +56,10 @@ public class gamePanel extends JPanel implements Runnable {
             delta += (now - lastTime) / ns;
             lastTime = now;
             while (delta >= 1) {
-                // Update game logic
                 update();
                 delta--;
             }
-            render(); // Render the game
+            render(); 
             frames++;
     
             if (System.currentTimeMillis() - timer > 1000) {
@@ -75,11 +74,9 @@ public class gamePanel extends JPanel implements Runnable {
 
     
     private void update() {
-        // Update game entities
         player.update();
         enemy.update();
     
-        // Check for collisions or other game events
         if (player.getBounds().intersects(enemy.getBounds())) {
             initiateBattle();
         }
