@@ -4,7 +4,6 @@ public class Character {
     protected int defense;
     protected int attack;
 
-    // Constructor
     public Character(String name, int health, int defense) {
         this.name = name;
         this.health = health;
@@ -12,10 +11,8 @@ public class Character {
         this.attack = attack;
     }
 
-    // Abstract method for attacking
     public abstract void attack(Character opponent);
 
-    // Method to take damage
     public void takeDamage(int damage) {
         health -= damage;
         if (!isAlive()) {
@@ -23,12 +20,10 @@ public class Character {
         }
     }
 
-    // Method to check if the character is alive
     public boolean isAlive() {
         return health > 0;
     }
 
-    // Getter for name
     public String getName() {
         return name;
     }
