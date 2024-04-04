@@ -1,4 +1,3 @@
-
 import javax.swing.JFrame;
 
 public class Main {
@@ -14,8 +13,8 @@ public class Main {
 
         window.setLocationRelativeTo(null);
         window.setVisible(true);
+
+        // gamePanel.setupGame();
         gamePanel.startGameThread();
     }
 }
-
-

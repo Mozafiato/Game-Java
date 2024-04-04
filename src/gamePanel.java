@@ -1,102 +1,89 @@
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
+import javax.swing.JPanel;
+import java.awt.Dimension;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 public class gamePanel extends JPanel implements Runnable {
-    // Define member variables
-    final int originalTileSize = 16;
-    final int scale = 3;
-    final int tileSize = originalTileSize * scale;
-    final int maxScreenCol = 16;
-    final int maxScreenRow = 12;
-    final int screenWidth = tileSize * maxScreenCol;
-    final int screenHeight = tileSize * maxScreenRow;
-    public TileManager tileM;
-    private KeyHandler keyH;
-    private Thread gameThread;
-    private Player player;
-    private Enemy enemy;
-    private BattleScreen battleScreen;
+        //this is game settings for screen
+        final int originalTileSize = 16;
+        final int scale = 3;
 
-    public gamePanel() {
-        this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        this.setBackground(Color.black);
-        this.setDoubleBuffered(true);
-        this.setFocusable(true);
-        this.addKeyListener(keyH);
-        this.setFocusable(true);
-        this.player = new Player(100, "Player", this, keyH); 
-        this.enemy = new Enemy("Enemy", 100); 
-         this.tileM = new TileManager(this);
-        this.keyH = new KeyHandler();
-    }
+        final int tileSize = originalTileSize*scale;
+        final int maxScreenCol = 16;
+        final int maxScreenRow = 12;
+        final int screenWidth = tileSize*maxScreenCol;
+        final int screenHeight = tileSize* maxScreenRow;
 
-    public void startGameThread() {
-        gameThread = new Thread(this);
-        gameThread.start();
-    }
+        TileManager tileM = new TileManager(this);
+        KeyHandler keyH = new KeyHandler();
+        Thread gameThread; //konsep waktu buat game nya, jadi bukan kek ppt, jadi kalo dah dipanggil dia bakal call method run otomatis
+        CollisionChecker Checker = new CollisionChecker(this);
+        // assetSetter aSetter = new assetSetter(this);
+        Player player = new Player(this,keyH);
+        Entity npc[] =  new Entity[10];
 
-    private void render() {
-        repaint();
-    }
-    
+        int playerX = 100;
+        int playerY = 100;
+        int playerSpeed = 4;
 
-    @Override
-    public void run() {
-        long lastTime = System.nanoTime();
-        double amountOfTicks = 60.0;
-        double ns = 1000000000 / amountOfTicks;
-        double delta = 0;
-        long timer = System.currentTimeMillis();
-        int frames = 0;
-    
-        while (true) {
-            long now = System.nanoTime();
-            delta += (now - lastTime) / ns;
-            lastTime = now;
-            while (delta >= 1) {
-                update();
-                delta--;
-            }
-            render(); 
-            frames++;
-    
-            if (System.currentTimeMillis() - timer > 1000) {
-                timer += 1000;
-                System.out.println("FPS: " + frames);
-                frames = 0;
+        
+        public gamePanel (){
+            this.setPreferredSize(new Dimension(screenWidth, screenHeight));
+            this.setBackground(Color.black);
+            this.setDoubleBuffered(true); // boost rendering performnace
+            this.addKeyListener(keyH);
+            this.setFocusable(true);
+        }
+
+        // public void setupGame() {
+        //     aSetter.setNpc();
+        // }
+
+        public void startGameThread(){
+            gameThread = new Thread(this);
+            gameThread.start();
+        }
+
+        @Override
+        public void run(){
+            double drawInterval = 1000000000/60;
+            double delta = 0;
+            long lastTime = System.nanoTime();  // ini semua cuma biar screen keupdateny 60 fps
+            long currentTime;
+
+            while (gameThread !=null){
+                currentTime = System.nanoTime();
+                delta += (currentTime - lastTime) / drawInterval;
+                lastTime = currentTime;
+
+                if (delta >= 1){
+                    update();
+                    repaint();
+                    delta--;
+                }
             }
         }
-    }
 
-    CollisionChecker Checker = new CollisionChecker(this);
-
-    
-    private void update() {
-        player.update();
-        enemy.update();
-    
-        if (player.getBounds().intersects(enemy.getBounds())) {
-            initiateBattle();
+        public void update(){
+            player.update();
         }
-    }
-    
+        
+        public void paintComponent(Graphics g){
+            super.paintComponent(g);
+            Graphics2D g2 = (Graphics2D)g;
+            tileM.draw(g2); // bakal ngedraw tiles dlu baru player, tidak bs kebalik
+            
+            for(int i = 0; i < npc.length; i++){
+                if(npc[i] != null) {
+                    npc[i].draw(g2);
+                }
+            }
 
 
-    public void initiateBattle() {
-        battleScreen = new BattleScreen(player, enemy);
-        battleScreen.setVisible(true);
-    }
-
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D) g;
-        tileM.draw(g2);
-        player.draw(g2);
-        enemy.draw(g2);
-        g2.dispose();
-    }
+            player.draw(g2);
+            g2.dispose();
+        }
 }
-
 

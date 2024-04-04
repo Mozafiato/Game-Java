@@ -27,12 +27,16 @@ public class TileManager {
 
         try {
             tile[0] = new Tile();
-            tile[0].image = ImageIO.read(getClass().getResourceAsStream("/Tiles/sand.png"));   
+            tile[0].image = ImageIO.read(getClass().getResourceAsStream("/Tiles/floor.png"));   
 
             tile[1] = new Tile();
             tile[1].image = ImageIO.read(getClass().getResourceAsStream("/Tiles/wall.png"));
             tile[1].collision = true;
-            
+
+            tile[2] = new Tile();
+            tile[2].image = ImageIO.read(getClass().getResourceAsStream("/Enemy/enemy_9.png"));
+            tile[2].collision = true;
+
 
         }catch (IOException e) {
             e.printStackTrace();
